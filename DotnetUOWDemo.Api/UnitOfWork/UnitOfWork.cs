@@ -13,7 +13,7 @@ public class UnitOfWork : IUnitOfWork
     {
         _context = context;
     }
-    IRepository<Category> CategoryRepository
+    public IRepository<Category> CategoryRepository
     {
         get
         {
@@ -36,13 +36,28 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
-    public void Dispose()
+    public async Task<int> SaveChangesAsync()
     {
-        throw new NotImplementedException();
+        return await _context.SaveChangesAsync();
     }
 
-    public Task<int> SaveChangesAsync()
+    private bool disposed = false;
+
+    protected virtual void Dispose(bool disposing)
     {
-        throw new NotImplementedException();
+        if (!disposed)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+        }
+        disposed = true;
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 }
