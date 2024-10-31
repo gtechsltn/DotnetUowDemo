@@ -14,23 +14,15 @@ public class Repository<T> : IRepository<T> where T : class
         _context = context;
         _dbSet = _context.Set<T>();
     }
-    public T Add(T entity)
-    {
-        _dbSet.Add(entity);
-        return entity;
-    }
+    public void Add(T entity) => _dbSet.Add(entity);
 
-    public T Update(T entity)
-    {
-        _dbSet.Update(entity);
-        return entity;
-    }
+    public void Update(T entity) => _dbSet.Update(entity);
 
     public void Delete(T entity) => _dbSet.Remove(entity);
 
-    public T? GetById(int id) => _dbSet.Find(id);
+    public async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
 
-    public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, IOrderedQueryable<T>? orderBy = null, string includeProperties = "")
+    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string includeProperties = "")
     {
         IQueryable<T> query = _dbSet;
         if (filter != null)
@@ -43,29 +35,11 @@ public class Repository<T> : IRepository<T> where T : class
         }
         if (orderBy != null)
         {
-            return orderBy.ToList();
+            return await orderBy(query).ToListAsync();
         }
-        return query.ToList();
+        else
+        {
+            return await query.ToListAsync();
+        }
     }
-
-    public IEnumerable<T> GetPaged(Expression<Func<T, bool>>? filter = null, IOrderedQueryable<T>? orderBy = null, string includeProperties = "", int pageNumber = 1, int pageSize = 10)
-    {
-        IQueryable<T> query = _dbSet;
-        if (filter != null)
-        {
-            query = query.Where(filter);
-        }
-        foreach (var includeProperty in includeProperties.Split([','], StringSplitOptions.RemoveEmptyEntries))
-        {
-            query = query.Include(includeProperty);
-        }
-        if (orderBy != null)
-        {
-            return orderBy.ToList();
-        }
-        query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
-
-        return query.ToList();
-    }
-
 }

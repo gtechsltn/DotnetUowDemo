@@ -4,11 +4,9 @@ namespace DotnetUOWDemo.Api.Repositories;
 
 public interface IRepository<T> where T : class
 {
-    T Add(T entity);
-    T Update(T entity);
+    void Add(T entity);
+    void Update(T entity);
     void Delete(T entity);
-    T? GetById(int id);
-    IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, IOrderedQueryable<T>? orderBy = null, string includeProperties = "");
-    IEnumerable<T> GetPaged(Expression<Func<T, bool>>? filter = null, IOrderedQueryable<T>? orderBy = null, string includeProperties = "", int pageNumber = 1,
-    int pageSize = 10);
+    Task<T?> GetByIdAsync(int id);
+    Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string includeProperties = "");
 }

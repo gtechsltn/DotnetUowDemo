@@ -11,4 +11,5 @@ public class Product
     public string ProductName { get; set; } = string.Empty;
 
     public int CategoryId { get; set; }
+    public Category Category { get; set; } = null!;
 }
