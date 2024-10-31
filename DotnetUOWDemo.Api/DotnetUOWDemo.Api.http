@@ -1,0 +1,6 @@
+@DotnetUOWDemo.Api_HostAddress = http://localhost:5007
+
+GET {{DotnetUOWDemo.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
