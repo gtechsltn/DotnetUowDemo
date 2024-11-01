@@ -1,14 +1,12 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
-namespace DotnetUOWDemo.Api.Models;
+namespace DotnetUOWDemo.Api.Models.DTOs;
 
-public class Category
+public class CategoryUpdateDto
 {
     public int Id { get; set; }
 
     [Required]
     [MaxLength(20)]
     public string Name { get; set; } = string.Empty;
-    public ICollection<Product> Products { get; set; } = [];
 }

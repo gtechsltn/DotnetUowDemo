@@ -21,7 +21,7 @@ public class UnitOfWork : IUnitOfWork
             {
                 _categoryRepository = new Repository<Category>(_context);
             }
-            return CategoryRepository;
+            return _categoryRepository;
         }
     }
     public IRepository<Product> ProductRepository
@@ -32,7 +32,7 @@ public class UnitOfWork : IUnitOfWork
             {
                 _productRepository = new Repository<Product>(_context);
             }
-            return ProductRepository;
+            return _productRepository;
         }
     }
 

@@ -20,7 +20,15 @@ public class Repository<T> : IRepository<T> where T : class
 
     public void Delete(T entity) => _dbSet.Remove(entity);
 
-    public async Task<T?> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
+    public async Task<T?> GetByIdAsync(int id, bool noTracking = false)
+    {
+        var query = _dbSet.AsQueryable();
+        if (noTracking)
+        {
+            query = query.AsNoTracking();
+        }
+        return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
+    }
 
     public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string includeProperties = "")
     {
@@ -42,4 +50,5 @@ public class Repository<T> : IRepository<T> where T : class
             return await query.ToListAsync();
         }
     }
+
 }

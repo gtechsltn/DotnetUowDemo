@@ -33,12 +33,12 @@ public class CategoryService : ICategoryService
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task<Category?> GetByIdCategoryAsync(int id)
+    public async Task<Category?> GetCategoryByIdAsync(int id)
     {
-        return await _unitOfWork.CategoryRepository.GetByIdAsync(id);
+        return await _unitOfWork.CategoryRepository.GetByIdAsync(id, noTracking: true);
     }
 
-    public Task<IEnumerable<Category>> GetAllCategoryAsync(Expression<Func<Category, bool>>? filter = null, IOrderedQueryable<Category>? orderBy = null, string includeProperties = "")
+    public Task<IEnumerable<Category>> GetAllCategoriesAsync()
     {
         return _unitOfWork.CategoryRepository.GetAllAsync();
     }
