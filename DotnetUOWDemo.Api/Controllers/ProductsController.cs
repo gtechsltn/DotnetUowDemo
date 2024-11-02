@@ -108,7 +108,13 @@ public class ProductsController : ControllerBase
         try
         {
             var products = await _productService.GetAllProductsAsync(sTerm);
-            var productsToReturn = _mapper.Map<IEnumerable<ProductDisplayDto>>(products);
+            var productsToReturn = products.Select(p => new ProductDisplayDto
+            {
+                Id = p.Id,
+                ProductName = p.ProductName,
+                CategoryId = p.CategoryId,
+                CategoryName = p.Category.Name
+            });
             return Ok(productsToReturn);
         }
         catch (Exception ex)

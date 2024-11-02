@@ -33,6 +33,7 @@ public class CategoryService : ICategoryService
         await _unitOfWork.SaveChangesAsync();
     }
 
+
     public async Task<Category?> GetCategoryByIdAsync(int id)
     {
         return await _unitOfWork.CategoryRepository.GetByIdAsync(id, noTracking: true);
